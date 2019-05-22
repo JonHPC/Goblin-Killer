@@ -24,10 +24,16 @@ public class PlayerController : MonoBehaviour
     public int hp = 10;
     public Slider hpBar;
     public TextMeshProUGUI hpText;
+    public int hpPotions;
+    public TextMeshProUGUI hpPotionsText;
+    public AudioSource hpPotionSound;
 
     public int mp = 3;
     public Slider mpBar;
     public TextMeshProUGUI mpText;
+    public int mpPotions;
+    public TextMeshProUGUI mpPotionsText;
+    public AudioSource mpPotionSound;
 
     public Vector2 currentPosition;
     public GameObject specialAttack;
@@ -65,7 +71,19 @@ public class PlayerController : MonoBehaviour
 
             }
             currentPosition = transform.position;//stores the player's current position
-            UpdateHPMP();
+
+            if(Input.GetKeyDown(KeyCode.Alpha1))//when '1' is pressed, attempt to use a hp potion
+            {
+                HPPotionUsed();
+            }
+
+            if(Input.GetKeyDown(KeyCode.Alpha2))//when '2' is pressed, attempt to use a mp potion
+            {
+                MPPotionUsed();
+            }
+
+
+            UpdateHPMP();//updates hp, mp, and hp/mp potions
             
         }
         
@@ -224,11 +242,58 @@ public class PlayerController : MonoBehaviour
 
     void UpdateHPMP()
     {
+        int hpClamped = Mathf.Clamp(hp, 0, 10);//clamps the hp value between 0-10
+        int mpClamped = Mathf.Clamp(mp, 0, 3);//clamps the mp value between 0-3
+
+        hp = hpClamped;//sets the hp back to the clamped value
+        mp = mpClamped;
+
         hpBar.value = hp;//sets hp bar to match the hp value
         hpText.text = hp + "/10";
 
         mpBar.value = mp;
         mpText.text = mp + "/3";
+
+        int hpPotionsClamped = Mathf.Clamp(hpPotions, 0, 3);//clamps the max potions to 3
+        int mpPotionsClamped = Mathf.Clamp(mpPotions, 0, 3);
+
+        hpPotions = hpPotionsClamped;//sets this clamped value to the hpPotions value
+        mpPotions = mpPotionsClamped;
+
+        hpPotionsText.text = "x " + hpPotions;//updates the text for hp potions
+        mpPotionsText.text = "x " + mpPotions;
+
+        
+    }
+
+    void HPPotionUsed()
+    {
+        if(hpPotions >= 1)
+        {
+            hpPotions -= 1; //uses one hp potion
+            hp += 2; //heals 2 hp 
+            hpPotionSound.Play();
+        }
+        else
+        {
+            Debug.Log("Not enough HP Potions");
+        }
+
+    }
+
+    void MPPotionUsed()
+    {
+        if (mpPotions >= 1)
+        {
+            mpPotions -= 1; //uses one mp potion
+            mp += 1; //heals 1 mp 
+            mpPotionSound.Play();
+        }
+        else
+        {
+            Debug.Log("Not enough MP Potions");
+        }
+
     }
 
     //FixedUpdate is called at a fixed interval and is independent of frame rate. Put physics code here

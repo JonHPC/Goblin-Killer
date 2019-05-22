@@ -261,10 +261,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   player: {fileID: 0}
+  gameController: {fileID: 0}
   moveSpeed: 4
   smoothTime: 4
   maxDist: 20
   bloodSplatter: {fileID: 7106606177679982862}
+  drops:
+  - {fileID: 8640013989373292095, guid: b33f8446faab0fd4db903f4efb7d948a, type: 3}
+  - {fileID: 1457072085797192210, guid: 06fa9c70cd684d24aaffe7cf29d4550c, type: 3}
+  - {fileID: 8620018362431933483, guid: fb7071a0a0291a740a73c4cca4fe2417, type: 3}
   hp: 3
 --- !u!1001 &4527650083503451391
 PrefabInstance:

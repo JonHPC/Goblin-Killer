@@ -37,7 +37,7 @@ public class GameController : MonoBehaviour
 
             if (spawnTimer >= spawnRate)
             {
-                for (int i = 0; i < 2; i++)
+                for (int i = 0; i < 3; i++)
                 {
                     Instantiate(enemy[i], spawnPoint[i].position, Quaternion.identity);
 

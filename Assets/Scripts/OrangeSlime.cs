@@ -11,6 +11,8 @@ public class OrangeSlime : MonoBehaviour
     public float maxDist = 20f;
     public GameObject bloodSplatter;
 
+    public GameObject[] drops;
+
     public int hp = 2;
 
     private AudioSource damageSound;
@@ -60,6 +62,16 @@ public class OrangeSlime : MonoBehaviour
         bloodSplatter.SetActive(true);
         
         yield return new WaitForSeconds(0.25f);
+
+        int randomNumber = UnityEngine.Random.Range(0, 10);
+        if (randomNumber == 1)
+        {
+            Instantiate(drops[0], transform.position, Quaternion.identity);//
+        }
+        else if (randomNumber == 7)
+        {
+            Instantiate(drops[1], transform.position, Quaternion.identity);//
+        }
         gameController.goblinsKilled += 1;//adds one to the kill score
         Destroy(this.gameObject);
     }

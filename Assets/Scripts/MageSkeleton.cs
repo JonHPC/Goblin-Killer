@@ -2,8 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-
-public class Goblin : MonoBehaviour
+public class MageSkeleton : MonoBehaviour
 {
     public Transform player;
     public GameController gameController;
@@ -14,7 +13,7 @@ public class Goblin : MonoBehaviour
     public GameObject[] drops;//array of possible drops
 
     public int hp = 3;
-    
+
     private AudioSource damageSound;
     private Vector2 smoothVelocity;
     private SpriteRenderer sprite;
@@ -26,24 +25,24 @@ public class Goblin : MonoBehaviour
         sprite = GetComponent<SpriteRenderer>();
         player = GameObject.FindWithTag("Player").transform;
         gameController = GameObject.FindWithTag("GameController").GetComponent<GameController>();
-        
+
     }
 
     // Update is called once per frame
     void Update()
     {
-        if(hp<= 0)
+        if (hp <= 0)
         {
             StartCoroutine(Death());
         }
 
         float distance = Vector2.Distance(transform.position, player.position);
-        if (distance < maxDist)//if within range, walk towards the player
+        if (distance < maxDist)
         {
-            transform.position = Vector2.SmoothDamp(transform.position, player.position, ref smoothVelocity, smoothTime);//smoothly walks towards the players position
+            transform.position = Vector2.SmoothDamp(transform.position, player.position, ref smoothVelocity, smoothTime);
         }
 
-        if(smoothVelocity.x > 0)
+        if (smoothVelocity.x > 0)
         {
             sprite.flipX = false;
         }
@@ -55,19 +54,19 @@ public class Goblin : MonoBehaviour
 
     IEnumerator Death()
     {
-        bloodSplatter.SetActive(true);//sets the blood splatter child game object active
+        bloodSplatter.SetActive(true);
         yield return new WaitForSeconds(0.25f);
-        int randomNumber = UnityEngine.Random.Range(0, 10);//roll sthe dice for drops
-        if (randomNumber == 2)
+        int randomNumber = UnityEngine.Random.Range(0, 10);
+        if (randomNumber <= 2)
         {
-            Instantiate(drops[0], transform.position, Quaternion.identity);//hp potion drop
+            Instantiate(drops[0], transform.position, Quaternion.identity);//
         }
         else if (randomNumber == 7)
         {
-            Instantiate(drops[1], transform.position, Quaternion.identity);//mp potion drop
+            Instantiate(drops[1], transform.position, Quaternion.identity);//
         }
 
-        else if (randomNumber >= 8)//hp orange drop
+        else if (randomNumber >=8)
         {
             Instantiate(drops[2], transform.position, Quaternion.identity);
         }
@@ -77,18 +76,18 @@ public class Goblin : MonoBehaviour
 
     private void FixedUpdate()
     {
-        
+
     }
 
     void OnTriggerEnter2D(Collider2D other)
     {
-        if(other.gameObject.CompareTag("Attack"))
+        if (other.gameObject.CompareTag("Attack"))
         {
-            
+
             hp -= 1;
             damageSound.Play();
             StartCoroutine(Blood());
-            
+
         }
 
         if (other.gameObject.CompareTag("Player"))
